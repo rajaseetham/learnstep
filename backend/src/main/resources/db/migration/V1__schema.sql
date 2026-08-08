@@ -120,3 +120,52 @@ CREATE TABLE IF NOT EXISTS `user_badges` (
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`badge_id`) REFERENCES `badges`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+-- 8. XP History Table
+CREATE TABLE IF NOT EXISTS `xp_history` (
+    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` BIGINT NOT NULL,
+    `xp_gained` INT NOT NULL,
+    `reason` VARCHAR(100) NOT NULL,
+    `earned_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- 9. Streaks Table
+CREATE TABLE IF NOT EXISTS `streaks` (
+    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` BIGINT NOT NULL UNIQUE,
+    `current_streak` INT DEFAULT 1,
+    `max_streak` INT DEFAULT 1,
+    `last_active_date` DATE NOT NULL,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- 10. Certificates Table
+CREATE TABLE IF NOT EXISTS `certificates` (
+    `id` VARCHAR(100) PRIMARY KEY,
+    `user_id` BIGINT NOT NULL,
+    `title` VARCHAR(150) NOT NULL,
+    `issued_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- 11. Bookmarks Table
+CREATE TABLE IF NOT EXISTS `bookmarks` (
+    `user_id` BIGINT NOT NULL,
+    `lesson_id` BIGINT NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`user_id`, `lesson_id`),
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`lesson_id`) REFERENCES `lessons`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Initial Seed Badges
+INSERT INTO `badges` (`id`, `name`, `icon`, `description`) VALUES
+('first_step', 'First Step Explorer', '🐣', 'Completed your very first computer science lesson!'),
+('quiz_whiz', 'Quiz Whiz', '⚡', 'Scored 100% on any quiz on the first try!'),
+('streak_3', 'On Fire (3-Day Streak)', '🔥', 'Maintained a daily learning streak for 3 consecutive days!'),
+('java_ninja', 'Java Code Ninja', '☕', 'Mastered basic Java programming concepts!'),
+('cs_master', 'Computer Science Master', '👑', 'Completed all 12 modules in the LearnStep roadmap!')
+ON DUPLICATE KEY UPDATE `name`=`name`;
+

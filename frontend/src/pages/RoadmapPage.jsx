@@ -80,7 +80,7 @@ export const RoadmapPage = () => {
 
         {/* Roadmap Nodes List */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '860px', margin: '0 auto' }}>
-          {topics.map((topic, index) => {
+          {topics.map((topic) => {
             const isBookmarked = bookmarks.includes(topic.id);
 
             return (
@@ -126,7 +126,7 @@ export const RoadmapPage = () => {
                         borderRadius: '50%',
                         display: 'flex'
                       }}>
-                        <CheckCircle2 size={20} color="#00B894" fill="#00B894" color="white" />
+                        <CheckCircle2 size={20} color="#00B894" fill="#00B894" />
                       </div>
                     )}
                   </div>
